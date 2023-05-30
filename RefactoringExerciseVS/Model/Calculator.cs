@@ -30,22 +30,24 @@ namespace RefactoringExerciseVS.Model
         {
             if (stack.Count > 1)
             {
+                double top=stack.Pop();
+                double second = stack.Pop();
                 switch (userInput) //I will return a bool here. And then maybe use a wrapperclass with a boolean?
                 {
                     case "+":
-                        stack.Push(stack.Pop() + stack.Pop());
+                        stack.Push(second + top);
                         break;
                     case "-":
-                        stack.Push(stack.Pop() - stack.Pop());
+                        stack.Push(second - top);
                         break;
                     case "*":
-                        stack.Push(stack.Pop() * stack.Pop());
+                        stack.Push(second * top);
                         break;
                     case "/":
-                        stack.Push(stack.Pop() / stack.Pop());
+                        stack.Push(second / top);
                         break;
                     case "c":
-                        ClearStack();
+                        ClearStack(); //This does not work when only 1 number
                         break;
                     default:
                         break;
