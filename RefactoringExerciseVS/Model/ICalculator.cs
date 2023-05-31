@@ -3,7 +3,14 @@
     public interface ICalculator
     {
         Stack<double> stack { get; }
-        void Calculations(string userInput);
+
+        void AddNumber(int userNumb);
         Stack<double> GetStack();
+        void AdditionOperation();
+        void SubtractOperation();
+        void MultiplyOperation();
+        void DivideOperation();
+        void ClearStack();
+
     }
 }
