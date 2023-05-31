@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RefactoringExerciseVS.Controller
 {
-    public class CalculatorController
+    public class CalculatorController : ICalculatorController
     {
         private readonly ICalculator calculator;
 
@@ -33,6 +33,10 @@ namespace RefactoringExerciseVS.Controller
             }
             return false;
         }
+        public int GetStackCount()
+        {
+            return this.calculator.stack.Count();
+        }
         public Stack<double> GetStack()
         {
             return this.calculator.stack;
@@ -44,42 +48,27 @@ namespace RefactoringExerciseVS.Controller
          */
         private bool Calculations(string input)
         {
-            bool success = true;
             switch (input) //I will return a bool here. And then maybe use a wrapperclass with a boolean?
             {
                 case "+":
-                    this.calculator.AdditionOperation();
+                    return this.calculator.AdditionOperation();
                     break;
                 case "-":
-                    this.calculator.SubtractOperation();
+                    return this.calculator.SubtractOperation();
                     break;
                 case "*":
-                    this.calculator.MultiplyOperation();
+                    return this.calculator.MultiplyOperation();
                     break;
                 case "/":
-                    this.calculator.DivideOperation();
+                    return this.calculator.DivideOperation();
                     break;
                 case "c":
-                    this.calculator.ClearStack();
+                    return this.calculator.ClearStack();
                     break;
                 default:
-                    success = false;
+                    return false;
                     break;
             }
-            return success;
-        }
-        public string printStack() //Works, but need refactor.
-        {
-            var stackStack = calculator.GetStack().ToList();
-            StringBuilder stackToString = new StringBuilder();
-            stackToString.Append('[');
-            for (int i = 0; i < stackStack.Count; i++)
-            {
-                stackToString.Append(stackStack[i]);
-                if (i != stackStack.Count - 1) stackToString.Append(", ");
-            }
-            stackToString.Append(']');
-            return stackToString.ToString();
         }
 
     }
