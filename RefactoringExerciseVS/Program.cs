@@ -16,7 +16,7 @@ while (true)
     {
         Console.WriteLine(printStack());
     }
-    var success = controller.UserInput(Console.ReadLine().Trim());
+    var success = controller.UserInput(Console.ReadLine());
     if (!success)
     {
         Console.WriteLine("Invalid input");

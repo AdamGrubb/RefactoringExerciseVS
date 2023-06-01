@@ -41,11 +41,6 @@ namespace RefactoringExerciseVS.Controller
         {
             return this.calculator.stack;
         }
-
-        /* Should i have a input check if the operand that is sent in is valid or not?
-         * Or should it return a bool? throw and error? Check others.
-         * 
-         */
         private bool Calculations(string input)
         {
             bool success = true;
