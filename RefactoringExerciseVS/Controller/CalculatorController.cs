@@ -5,12 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RefactoringExerciseVS.Model;
+using RefactoringExerciseVS.View;
 
 namespace RefactoringExerciseVS.Controller
 {
-    public class CalculatorController : ICalculatorController
+    public class CalculatorController
     {
-        private Stack<double> stack = new Stack<double>();
+
+        private readonly ICalculatorView calculatorView;
+        private readonly IStack stack;
+
+        public CalculatorController(ICalculatorView calculatorView, IStack stack)
+        {
+            this.calculatorView = calculatorView;
+            this.stack = stack;
+        }
         public bool UserInput(string input) //Bool-kollen är svår att följa
         {
             if (!String.IsNullOrWhiteSpace(input))
@@ -31,10 +41,6 @@ namespace RefactoringExerciseVS.Controller
         public int GetStackCount()
         {
             return stack.Count();
-        }
-        public Stack<double> GetStack()
-        {
-            return stack;
         }
         private bool Calculations(string input)
         {
@@ -97,7 +103,7 @@ namespace RefactoringExerciseVS.Controller
         }
         private void checkStackCount(Func<double, double, double> arithmeticOperation)
         {
-            if (stack.Count > 1)
+            if (stack.Count() > 1)
             {
                 double stackTop = stack.Pop();
                 double stackSecond = stack.Pop();
@@ -106,6 +112,39 @@ namespace RefactoringExerciseVS.Controller
 
         }
 
+        public void Start()
+        {
+                while (true)
+                {
+                    if (GetStackCount() == 0)
+                    {
+                    calculatorView.Output("Commands: q c + - * / number");
+                    calculatorView.Output("[]");
+                    }
+                    else
+                    {
+                    calculatorView.Output(printStack());
+                    }
+                    var success = UserInput(calculatorView.Input());
+                    if (!success)
+                    {
+                    calculatorView.Output("Invalid input");
+                    }
 
+                }
+        }
+        private string printStack() //Works, but need refactor.
+        {
+            var stackStack = stack.ListData();
+            StringBuilder stackToString = new StringBuilder();
+            stackToString.Append('[');
+            for (int i = stack.Count() - 1; ; i--)
+            {
+                stackToString.Append(stackStack[i]);
+                if (i == 0)
+                    return stackToString.Append(']').ToString();
+                stackToString.Append(", ");
+            }
+        }
     }
 }
