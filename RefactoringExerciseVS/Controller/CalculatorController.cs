@@ -48,27 +48,30 @@ namespace RefactoringExerciseVS.Controller
          */
         private bool Calculations(string input)
         {
+            bool success = true;
             switch (input) //I will return a bool here. And then maybe use a wrapperclass with a boolean?
             {
+                
                 case "+":
-                    return this.calculator.AdditionOperation();
+                    this.calculator.AdditionOperation();
                     break;
                 case "-":
-                    return this.calculator.SubtractOperation();
+                    this.calculator.SubtractOperation();
                     break;
                 case "*":
-                    return this.calculator.MultiplyOperation();
+                    this.calculator.MultiplyOperation();
                     break;
                 case "/":
-                    return this.calculator.DivideOperation();
+                    this.calculator.DivideOperation();
                     break;
                 case "c":
-                    return this.calculator.ClearStack();
+                    this.calculator.ClearStack();
                     break;
                 default:
-                    return false;
+                success= false;
                     break;
             }
+            return success;
         }
 
     }

@@ -5,11 +5,11 @@
         Stack<double> stack { get; }
 
         void AddNumber(int userNumb);
-        bool AdditionOperation();
-        bool SubtractOperation();
-        bool MultiplyOperation();
-        bool DivideOperation();
-        bool ClearStack();
+        void AdditionOperation();
+        void SubtractOperation();
+        void MultiplyOperation();
+        void DivideOperation();
+        void ClearStack();
 
     }
 }

@@ -15,41 +15,38 @@ namespace RefactoringExerciseVS.Model
             stack.Push(userNumb);
         }
 
-        public bool ClearStack()
+        public void ClearStack()
         {
             stack.Clear();
-            return true;
         }
 
-        public bool AdditionOperation()
+        public void AdditionOperation()
         {
-            return checkStackCount((stackSecond, stackTop) => stackSecond + stackTop);
+            checkStackCount((stackSecond, stackTop) => stackSecond + stackTop);
         }
 
-        public bool SubtractOperation()
+        public void SubtractOperation()
         {
-            return checkStackCount((stackSecond, stackTop) => stackSecond - stackTop);
+            checkStackCount((stackSecond, stackTop) => stackSecond - stackTop);
         }
 
-        public bool MultiplyOperation()
+        public void MultiplyOperation()
         {
-            return checkStackCount((stackSecond, stackTop) => stackSecond * stackTop);
+            checkStackCount((stackSecond, stackTop) => stackSecond * stackTop);
         }
 
-        public bool DivideOperation()
+        public void DivideOperation()
         {
-            return checkStackCount((stackSecond, stackTop) => stackSecond / stackTop);
+            checkStackCount((stackSecond, stackTop) => stackSecond / stackTop);
         }
-        private bool checkStackCount(Func<double, double, double> arithmeticOperation) 
+        private void checkStackCount(Func<double, double, double> arithmeticOperation)
         {
             if (stack.Count > 1)
             {
                 double stackTop = stack.Pop();
                 double stackSecond = stack.Pop();
                 stack.Push(arithmeticOperation(stackSecond, stackTop));
-                return true;
             }
-            else return false;
 
         }
     }
