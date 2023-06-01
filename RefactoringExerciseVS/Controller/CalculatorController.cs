@@ -1,4 +1,4 @@
-﻿using RefactoringExerciseVS.Model;
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,19 +10,14 @@ namespace RefactoringExerciseVS.Controller
 {
     public class CalculatorController : ICalculatorController
     {
-        private readonly ICalculatorModel calculator;
-
-        public CalculatorController(ICalculatorModel calculator)
-        {
-            this.calculator = calculator;
-        }
+        private Stack<double> stack = new Stack<double>();
         public bool UserInput(string input) //Bool-kollen är svår att följa
         {
             if (!String.IsNullOrWhiteSpace(input))
             {
                 if (Int32.TryParse(input, out var result))
                 {
-                    this.calculator.AddNumber(result);
+                    AddNumber(result);
                     return true;
                 }
                 else
@@ -35,11 +30,11 @@ namespace RefactoringExerciseVS.Controller
         }
         public int GetStackCount()
         {
-            return this.calculator.stack.Count();
+            return stack.Count();
         }
         public Stack<double> GetStack()
         {
-            return this.calculator.stack;
+            return stack;
         }
         private bool Calculations(string input)
         {
@@ -48,19 +43,19 @@ namespace RefactoringExerciseVS.Controller
             {
                 
                 case "+":
-                    this.calculator.AdditionOperation();
+                    AdditionOperation();
                     break;
                 case "-":
-                    this.calculator.SubtractOperation();
+                    SubtractOperation();
                     break;
                 case "*":
-                    this.calculator.MultiplyOperation();
+                    MultiplyOperation();
                     break;
                 case "/":
-                    this.calculator.DivideOperation();
+                    DivideOperation();
                     break;
                 case "c":
-                    this.calculator.ClearStack();
+                    ClearStack();
                     break;
                 case "q":
                     Environment.Exit(0);
@@ -71,6 +66,46 @@ namespace RefactoringExerciseVS.Controller
             }
             return success;
         }
+        public void AddNumber(int userNumb)
+        {
+            stack.Push(userNumb);
+        }
+
+        public void ClearStack()
+        {
+            stack.Clear();
+        }
+
+        public void AdditionOperation()
+        {
+            checkStackCount((stackSecond, stackTop) => stackSecond + stackTop);
+        }
+
+        public void SubtractOperation()
+        {
+            checkStackCount((stackSecond, stackTop) => stackSecond - stackTop);
+        }
+
+        public void MultiplyOperation()
+        {
+            checkStackCount((stackSecond, stackTop) => stackSecond * stackTop);
+        }
+
+        public void DivideOperation()
+        {
+            checkStackCount((stackSecond, stackTop) => stackSecond / stackTop);
+        }
+        private void checkStackCount(Func<double, double, double> arithmeticOperation)
+        {
+            if (stack.Count > 1)
+            {
+                double stackTop = stack.Pop();
+                double stackSecond = stack.Pop();
+                stack.Push(arithmeticOperation(stackSecond, stackTop));
+            }
+
+        }
+
 
     }
 }
