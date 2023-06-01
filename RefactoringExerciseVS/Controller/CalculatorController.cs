@@ -21,18 +21,18 @@ namespace RefactoringExerciseVS.Controller
             this.calculatorView = calculatorView;
             this.stack = stack;
         }
-        public bool UserInput(string input) //Bool-kollen är svår att följa
+        public bool ValidateInput(string input)
         {
             if (!String.IsNullOrWhiteSpace(input))
             {
                 if (Int32.TryParse(input, out var result))
                 {
-                    AddNumber(result);
+                    AddNumberToStack(result);
                     return true;
                 }
                 else
                 {
-                    return Calculations(input);
+                    return CalculatorMethods(input);
                 }
 
             }
@@ -42,17 +42,17 @@ namespace RefactoringExerciseVS.Controller
         {
             return stack.Count();
         }
-        private bool Calculations(string input)
+        private bool CalculatorMethods(string input)
         {
-            bool success = true;
-            switch (input) //I will return a bool here. And then maybe use a wrapperclass with a boolean?
+            bool IsValidInput = true;
+            switch (input)
             {
-                
+
                 case "+":
                     AdditionOperation();
                     break;
                 case "-":
-                    SubtractOperation();
+                    SubtractionOperation();
                     break;
                 case "*":
                     MultiplyOperation();
@@ -67,12 +67,12 @@ namespace RefactoringExerciseVS.Controller
                     Environment.Exit(0);
                     break;
                 default:
-                success= false;
+                    IsValidInput = false;
                     break;
             }
-            return success;
+            return IsValidInput;
         }
-        private void AddNumber(int userNumb)
+        private void AddNumberToStack(int userNumb)
         {
             stack.Push(userNumb);
         }
@@ -84,24 +84,24 @@ namespace RefactoringExerciseVS.Controller
 
         private void AdditionOperation()
         {
-            checkStackCount((stackSecond, stackTop) => stackSecond + stackTop);
+            ValidateStackCount((stackSecond, stackTop) => stackSecond + stackTop);
         }
 
-        private void SubtractOperation()
+        private void SubtractionOperation()
         {
-            checkStackCount((stackSecond, stackTop) => stackSecond - stackTop);
+            ValidateStackCount((stackSecond, stackTop) => stackSecond - stackTop);
         }
 
         private void MultiplyOperation()
         {
-            checkStackCount((stackSecond, stackTop) => stackSecond * stackTop);
+            ValidateStackCount((stackSecond, stackTop) => stackSecond * stackTop);
         }
 
         private void DivideOperation()
         {
-            checkStackCount((stackSecond, stackTop) => stackSecond / stackTop);
+            ValidateStackCount((stackSecond, stackTop) => stackSecond / stackTop);
         }
-        private void checkStackCount(Func<double, double, double> arithmeticOperation)
+        private void ValidateStackCount(Func<double, double, double> arithmeticOperation)
         {
             if (stack.Count() > 1)
             {
@@ -114,26 +114,26 @@ namespace RefactoringExerciseVS.Controller
 
         public void Start()
         {
-                while (true)
+            while (true)
+            {
+                if (GetStackCount() == 0)
                 {
-                    if (GetStackCount() == 0)
-                    {
                     calculatorView.Output("Commands: q c + - * / number");
                     calculatorView.Output("[]");
-                    }
-                    else
-                    {
-                    calculatorView.Output(printStack());
-                    }
-                    var success = UserInput(calculatorView.Input());
-                    if (!success)
-                    {
-                    calculatorView.Output("Invalid input");
-                    }
-
                 }
+                else
+                {
+                    calculatorView.Output(ArrayToString());
+                }
+                var success = ValidateInput(calculatorView.Input());
+                if (!success)
+                {
+                    calculatorView.Output("Invalid input");
+                }
+
+            }
         }
-        private string printStack() //Works, but need refactor.
+        private string ArrayToString()
         {
             var stackStack = stack.ListData();
             StringBuilder stackToString = new StringBuilder();
