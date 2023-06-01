@@ -38,7 +38,7 @@ namespace RefactoringExerciseVS.Controller
             }
             return false;
         }
-        public int GetStackCount()
+        private int GetStackCount()
         {
             return stack.Count();
         }
@@ -72,32 +72,32 @@ namespace RefactoringExerciseVS.Controller
             }
             return success;
         }
-        public void AddNumber(int userNumb)
+        private void AddNumber(int userNumb)
         {
             stack.Push(userNumb);
         }
 
-        public void ClearStack()
+        private void ClearStack()
         {
             stack.Clear();
         }
 
-        public void AdditionOperation()
+        private void AdditionOperation()
         {
             checkStackCount((stackSecond, stackTop) => stackSecond + stackTop);
         }
 
-        public void SubtractOperation()
+        private void SubtractOperation()
         {
             checkStackCount((stackSecond, stackTop) => stackSecond - stackTop);
         }
 
-        public void MultiplyOperation()
+        private void MultiplyOperation()
         {
             checkStackCount((stackSecond, stackTop) => stackSecond * stackTop);
         }
 
-        public void DivideOperation()
+        private void DivideOperation()
         {
             checkStackCount((stackSecond, stackTop) => stackSecond / stackTop);
         }
