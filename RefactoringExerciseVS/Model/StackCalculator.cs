@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RefactoringExerciseVS.Model
 {
-    public class Calculator : ICalculator
+    public class StackCalculator : ICalculatorModel
     {
         public Stack<double> stack { get; } = new Stack<double>();
         public void AddNumber(int userNumb)

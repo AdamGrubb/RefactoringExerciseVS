@@ -1,6 +1,6 @@
 ﻿namespace RefactoringExerciseVS.Model
 {
-    public interface ICalculator
+    public interface ICalculatorModel
     {
         Stack<double> stack { get; }
 

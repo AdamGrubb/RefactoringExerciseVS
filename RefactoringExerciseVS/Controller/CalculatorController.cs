@@ -10,9 +10,9 @@ namespace RefactoringExerciseVS.Controller
 {
     public class CalculatorController : ICalculatorController
     {
-        private readonly ICalculator calculator;
+        private readonly ICalculatorModel calculator;
 
-        public CalculatorController(ICalculator calculator)
+        public CalculatorController(ICalculatorModel calculator)
         {
             this.calculator = calculator;
         }
@@ -61,6 +61,9 @@ namespace RefactoringExerciseVS.Controller
                     break;
                 case "c":
                     this.calculator.ClearStack();
+                    break;
+                case "q":
+                    Environment.Exit(0);
                     break;
                 default:
                 success= false;
