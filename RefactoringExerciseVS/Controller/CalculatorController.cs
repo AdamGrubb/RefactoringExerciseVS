@@ -12,7 +12,6 @@ namespace RefactoringExerciseVS.Controller
 {
     public class CalculatorController
     {
-
         private readonly ICalculatorView calculatorView;
         private readonly IStack stack;
 
@@ -84,24 +83,24 @@ namespace RefactoringExerciseVS.Controller
 
         private void AdditionOperation()
         {
-            ValidateStackCount((stackSecond, stackTop) => stackSecond + stackTop);
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond + stackTop);
         }
 
         private void SubtractionOperation()
         {
-            ValidateStackCount((stackSecond, stackTop) => stackSecond - stackTop);
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond - stackTop);
         }
 
         private void MultiplyOperation()
         {
-            ValidateStackCount((stackSecond, stackTop) => stackSecond * stackTop);
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond * stackTop);
         }
 
         private void DivideOperation()
         {
-            ValidateStackCount((stackSecond, stackTop) => stackSecond / stackTop);
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond / stackTop);
         }
-        private void ValidateStackCount(Func<double, double, double> arithmeticOperation)
+        private void PerformArithmeticOperationOnStack(Func<double, double, double> arithmeticOperation)
         {
             if (stack.Count() > 1)
             {
@@ -111,7 +110,6 @@ namespace RefactoringExerciseVS.Controller
             }
 
         }
-
         public void Start()
         {
             while (true)
