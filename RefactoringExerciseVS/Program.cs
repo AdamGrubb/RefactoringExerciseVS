@@ -1,38 +1,10 @@
 ﻿using RefactoringExerciseVS.Controller;
 using RefactoringExerciseVS.Model;
+using RefactoringExerciseVS.View;
 using System.Text;
 
-Calculator calculator = new Calculator();
+StackCalculator calculator = new StackCalculator();
 CalculatorController controller = new CalculatorController(calculator);
+ConsoleCalculator view = new ConsoleCalculator(controller);
+view.Start();
 
-while (true)
-{
-    if (controller.GetStack().Count == 0)
-    {
-        Console.WriteLine("Commands: q c + - * / number");
-        Console.WriteLine("[]");
-    }
-    else
-    {
-        Console.WriteLine(printStack());
-    }
-    var success = controller.UserInput(Console.ReadLine().Trim());
-    if (!success)
-    {
-        Console.WriteLine("Invalid input");
-    }
-    
-}
-string printStack() //Works, but need refactor.
-{
-    var stackStack = calculator.GetStack().ToList();
-    StringBuilder stackToString = new StringBuilder();
-    stackToString.Append('[');
-    for (int i = 0; i < stackStack.Count; i++)
-    {
-        stackToString.Append(stackStack[i]);
-        if (i != stackStack.Count - 1) stackToString.Append(", ");
-    }
-    stackToString.Append(']');
-    return stackToString.ToString();
-}

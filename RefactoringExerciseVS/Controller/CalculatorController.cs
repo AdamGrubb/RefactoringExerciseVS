@@ -8,30 +8,68 @@ using System.Threading.Tasks;
 
 namespace RefactoringExerciseVS.Controller
 {
-    public class CalculatorController
+    public class CalculatorController : ICalculatorController
     {
-        private readonly ICalculator calculator;
+        private readonly ICalculatorModel calculator;
 
-        public CalculatorController(ICalculator calculator) 
+        public CalculatorController(ICalculatorModel calculator)
         {
             this.calculator = calculator;
         }
-        public bool UserInput(string input) 
+        public bool UserInput(string input) //Bool-kollen är svår att följa
         {
-            if(String.IsNullOrWhiteSpace(input)) 
+            if (!String.IsNullOrWhiteSpace(input))
             {
-                return false;
+                if (Int32.TryParse(input, out var result))
+                {
+                    this.calculator.AddNumber(result);
+                    return true;
+                }
+                else
+                {
+                    return Calculations(input);
+                }
+
             }
-            else
-            {
-                this.calculator.Calculations(input);
-                return true;
-            }
-            
+            return false;
+        }
+        public int GetStackCount()
+        {
+            return this.calculator.stack.Count();
         }
         public Stack<double> GetStack()
         {
             return this.calculator.stack;
+        }
+        private bool Calculations(string input)
+        {
+            bool success = true;
+            switch (input) //I will return a bool here. And then maybe use a wrapperclass with a boolean?
+            {
+                
+                case "+":
+                    this.calculator.AdditionOperation();
+                    break;
+                case "-":
+                    this.calculator.SubtractOperation();
+                    break;
+                case "*":
+                    this.calculator.MultiplyOperation();
+                    break;
+                case "/":
+                    this.calculator.DivideOperation();
+                    break;
+                case "c":
+                    this.calculator.ClearStack();
+                    break;
+                case "q":
+                    Environment.Exit(0);
+                    break;
+                default:
+                success= false;
+                    break;
+            }
+            return success;
         }
 
     }
