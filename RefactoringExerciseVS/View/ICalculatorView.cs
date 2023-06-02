@@ -1,9 +1,8 @@
 ﻿namespace RefactoringExerciseVS.View
 {
-    public interface IConsoleCalculator
+    public interface ICalculatorView
     {
         string Input();
         void Output(string outPut);
-        void Start();
     }
 }

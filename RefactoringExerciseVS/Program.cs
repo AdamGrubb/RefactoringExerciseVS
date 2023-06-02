@@ -3,8 +3,9 @@ using RefactoringExerciseVS.Model;
 using RefactoringExerciseVS.View;
 using System.Text;
 
-StackCalculator calculator = new StackCalculator();
-CalculatorController controller = new CalculatorController(calculator);
-ConsoleCalculator view = new ConsoleCalculator(controller);
-view.Start();
+ConsoleCalculator consoleCalculator = new ConsoleCalculator();
+DoubleStack doubleStack = new DoubleStack();
+NormalStack normalStack = new NormalStack();
+CalculatorController calculatorController = new CalculatorController(consoleCalculator, doubleStack);
+calculatorController.Start();
 

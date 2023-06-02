@@ -1,76 +1,148 @@
-﻿using RefactoringExerciseVS.Model;
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RefactoringExerciseVS.Model;
+using RefactoringExerciseVS.View;
 
 namespace RefactoringExerciseVS.Controller
 {
-    public class CalculatorController : ICalculatorController
+    public class CalculatorController
     {
-        private readonly ICalculatorModel calculator;
+        private readonly ICalculatorView calculatorView;
+        private readonly IStack stack;
 
-        public CalculatorController(ICalculatorModel calculator)
+        public CalculatorController(ICalculatorView calculatorView, IStack stack)
         {
-            this.calculator = calculator;
+            this.calculatorView = calculatorView;
+            this.stack = stack;
         }
-        public bool UserInput(string input) //Bool-kollen är svår att följa
+        public bool ValidateInput(string input)
         {
             if (!String.IsNullOrWhiteSpace(input))
             {
                 if (Int32.TryParse(input, out var result))
                 {
-                    this.calculator.AddNumber(result);
+                    AddNumberToStack(result);
                     return true;
                 }
                 else
                 {
-                    return Calculations(input);
+                    return CalculatorMethods(input);
                 }
 
             }
             return false;
         }
-        public int GetStackCount()
+        private int GetStackCount()
         {
-            return this.calculator.stack.Count();
+            return stack.Count();
         }
-        public Stack<double> GetStack()
+        private bool CalculatorMethods(string input)
         {
-            return this.calculator.stack;
-        }
-        private bool Calculations(string input)
-        {
-            bool success = true;
-            switch (input) //I will return a bool here. And then maybe use a wrapperclass with a boolean?
+            bool IsValidInput = true;
+            switch (input)
             {
-                
+
                 case "+":
-                    this.calculator.AdditionOperation();
+                    AdditionOperation();
                     break;
                 case "-":
-                    this.calculator.SubtractOperation();
+                    SubtractionOperation();
                     break;
                 case "*":
-                    this.calculator.MultiplyOperation();
+                    MultiplyOperation();
                     break;
                 case "/":
-                    this.calculator.DivideOperation();
+                    DivideOperation();
                     break;
                 case "c":
-                    this.calculator.ClearStack();
+                    ClearStack();
                     break;
                 case "q":
                     Environment.Exit(0);
                     break;
                 default:
-                success= false;
+                    IsValidInput = false;
                     break;
             }
-            return success;
+            return IsValidInput;
+        }
+        private void AddNumberToStack(int userNumb)
+        {
+            stack.Push(userNumb);
         }
 
+        private void ClearStack()
+        {
+            stack.Clear();
+        }
+
+        private void AdditionOperation()
+        {
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond + stackTop);
+        }
+
+        private void SubtractionOperation()
+        {
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond - stackTop);
+        }
+
+        private void MultiplyOperation()
+        {
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond * stackTop);
+        }
+
+        private void DivideOperation()
+        {
+            PerformArithmeticOperationOnStack((stackSecond, stackTop) => stackSecond / stackTop);
+        }
+        private void PerformArithmeticOperationOnStack(Func<double, double, double> arithmeticOperation)
+        {
+            if (stack.Count() > 1)
+            {
+                double stackTop = stack.Pop();
+                double stackSecond = stack.Pop();
+                stack.Push(arithmeticOperation(stackSecond, stackTop));
+            }
+
+        }
+        public void Start()
+        {
+            while (true)
+            {
+                if (GetStackCount() == 0)
+                {
+                    calculatorView.Output("Commands: q c + - * / number");
+                    calculatorView.Output("[]");
+                }
+                else
+                {
+                    calculatorView.Output(ArrayToString());
+                }
+                var success = ValidateInput(calculatorView.Input());
+                if (!success)
+                {
+                    calculatorView.Output("Invalid input");
+                }
+
+            }
+        }
+        private string ArrayToString()
+        {
+            var stackStack = stack.ListData();
+            StringBuilder stackToString = new StringBuilder();
+            stackToString.Append('[');
+            for (int i = stack.Count() - 1; ; i--)
+            {
+                stackToString.Append(stackStack[i]);
+                if (i == 0)
+                    return stackToString.Append(']').ToString();
+                stackToString.Append(", ");
+            }
+        }
     }
 }
